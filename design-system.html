@@ -17,6 +17,8 @@
     --ilia-linen:      #eae8e1;
     --ilia-cream:      #f5f4f0;
     --ilia-white:      #ffffff;
+    --ilia-green:      #0f2d1e;
+    --ilia-green-mid:  #1a4a30;
     --ilia-sage:       #3b6d11;
     --ilia-sage-light: #eaf3de;
     --ilia-terracotta: #993c1d;
@@ -74,10 +76,26 @@
   /* =====================
      LAYOUT
   ===================== */
+  /* =====================
+     LOGO
+  ===================== */
+  .ilia-logo-wordmark {
+    font-family: var(--font-sans);
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    color: var(--ilia-green);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .ilia-logo-wordmark.on-dark { color: var(--ilia-white); }
+  .ilia-logo-wordmark.sm { font-size: 28px; }
+  .ilia-logo-wordmark.xs { font-size: 18px; }
+
   .ds-nav {
     position: sticky;
     top: 0;
-    background: var(--ilia-ink);
+    background: var(--ilia-green);
     z-index: 100;
     padding: 0 var(--space-6);
     display: flex;
@@ -86,10 +104,11 @@
     height: 52px;
   }
   .ds-nav-logo {
-    font-size: var(--text-md);
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 900;
     color: var(--ilia-white);
-    letter-spacing: .04em;
+    letter-spacing: -.02em;
+    text-transform: uppercase;
     margin-right: auto;
   }
   .ds-nav a {
@@ -134,7 +153,7 @@
      HERO
   ===================== */
   .ds-hero {
-    background: var(--ilia-ink);
+    background: var(--ilia-green);
     border-radius: var(--radius-lg);
     padding: var(--space-8) var(--space-7);
     margin-bottom: var(--space-8);
@@ -573,6 +592,7 @@
 <!-- NAV -->
 <nav class="ds-nav">
   <span class="ds-nav-logo">ILIA</span>
+  <a href="#logo">Logo</a>
   <a href="#colors">Couleurs</a>
   <a href="#typography">Typo</a>
   <a href="#buttons">Boutons</a>
@@ -593,11 +613,59 @@
     <p class="ds-hero-tagline">"Promotions generate short-term traffic. Perception builds long-term brand equity."</p>
   </div>
 
+  <!-- LOGO -->
+  <section class="ds-section" id="logo">
+    <h2 class="ds-section-title">Logo</h2>
+    <div class="ds-grid ds-grid-2" style="margin-bottom:var(--space-5);">
+
+      <!-- Logo wordmark sur fond clair -->
+      <div style="background:var(--ilia-white);border-radius:var(--radius-lg);padding:var(--space-7);display:flex;align-items:center;justify-content:center;border:1px solid var(--ilia-linen);">
+        <span class="ilia-logo-wordmark">ILIA</span>
+      </div>
+
+      <!-- Logo wordmark sur fond vert -->
+      <div style="background:var(--ilia-green);border-radius:var(--radius-lg);padding:var(--space-7);display:flex;align-items:center;justify-content:center;">
+        <span class="ilia-logo-wordmark on-dark">ILIA</span>
+      </div>
+
+      <!-- Logo wordmark sur fond cream -->
+      <div style="background:var(--ilia-cream);border-radius:var(--radius-lg);padding:var(--space-6);display:flex;align-items:center;justify-content:center;border:1px solid var(--ilia-linen);">
+        <span class="ilia-logo-wordmark">ILIA</span>
+      </div>
+
+      <!-- Logo wordmark sur fond ink -->
+      <div style="background:var(--ilia-ink);border-radius:var(--radius-lg);padding:var(--space-6);display:flex;align-items:center;justify-content:center;">
+        <span class="ilia-logo-wordmark on-dark">ILIA</span>
+      </div>
+    </div>
+
+    <div style="background:var(--ilia-white);border-radius:var(--radius-md);padding:var(--space-5);border:1px solid var(--ilia-linen);margin-bottom:var(--space-4);">
+      <div style="font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ilia-sand);margin-bottom:var(--space-4);">Tailles</div>
+      <div style="display:flex;align-items:baseline;gap:var(--space-6);flex-wrap:wrap;">
+        <span class="ilia-logo-wordmark">ILIA</span>
+        <span class="ilia-logo-wordmark sm">ILIA</span>
+        <span class="ilia-logo-wordmark xs">ILIA</span>
+      </div>
+    </div>
+
+    <div style="background:var(--ilia-white);border-radius:var(--radius-md);padding:var(--space-5);border:1px solid var(--ilia-linen);">
+      <div style="font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ilia-sand);margin-bottom:var(--space-3);">Référence logo complet</div>
+      <img src="logo.jpg" style="max-height:100px;opacity:.9;" alt="ILIA logo complet">
+      <p style="font-size:var(--text-xs);color:var(--ilia-sand);margin-top:var(--space-2);">Usage numérique : wordmark seul (sans pictogramme ni baseline). Logo complet pour impression et signalétique.</p>
+    </div>
+  </section>
+
   <!-- COLORS -->
   <section class="ds-section" id="colors">
     <h2 class="ds-section-title">Palette de couleurs</h2>
 
     <p style="font-size:var(--text-sm);color:var(--ilia-stone);margin-bottom:var(--space-5);">Palette naturelle et terreuse — chaleur, sobriété, ancrage dans le réel.</p>
+
+    <div style="margin-bottom:var(--space-3);font-size:var(--text-xs);font-weight:600;color:var(--ilia-sand);text-transform:uppercase;letter-spacing:.07em;">Couleur signature</div>
+    <div class="ds-grid ds-grid-4" style="margin-bottom:var(--space-5);">
+      <div class="swatch"><div class="swatch-color" style="background:#0f2d1e;"></div><div class="swatch-info"><div class="swatch-name">ILIA Green</div><div class="swatch-hex">#0f2d1e</div><div class="swatch-token">--ilia-green</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1a4a30;"></div><div class="swatch-info"><div class="swatch-name">Green Mid</div><div class="swatch-hex">#1a4a30</div><div class="swatch-token">--ilia-green-mid</div></div></div>
+    </div>
 
     <div style="margin-bottom:var(--space-3);font-size:var(--text-xs);font-weight:600;color:var(--ilia-sand);text-transform:uppercase;letter-spacing:.07em;">Primaires</div>
     <div class="ds-grid ds-grid-4" style="margin-bottom:var(--space-5);">
