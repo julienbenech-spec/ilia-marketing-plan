@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ILIA</title>
+<script>
+// Config — Sheet ID et Apps Script URL
+const SHEET_ID = "1zXMdzQitv4djH_gRdOUOlDITJvQZ2uUnioBVo9mIPC4";
+const SCRIPT_URL = "APPS_SCRIPT_URL_PLACEHOLDER";
+
+// Lire le QR ID depuis l'URL : /qr/redirect.html?id=s1
+const params = new URLSearchParams(window.location.search);
+const qrId = params.get("id") || "unknown";
+
+// Destinations (synchronisé avec QR Config dans le Sheet)
+// À mettre à jour ici quand tu changes une URL dans le Sheet
+const destinations = {
+  "s1": "https://www.instagram.com/iliarestaurant/",
+  "s2": "https://www.tiktok.com/@iliarestaurant",
+  "s3": "https://www.instagram.com/iliarestaurant/",
+  "s4": "https://www.instagram.com/iliarestaurant/",
+  "s5": "https://www.instagram.com/iliarestaurant/",
+  "m1": "https://iliarestaurant.fr"
+};
+
+const dest = destinations[qrId] || "https://www.instagram.com/iliarestaurant/";
+
+// Logger le scan via Apps Script (async, non bloquant)
+if (SCRIPT_URL !== "APPS_SCRIPT_URL_PLACEHOLDER") {
+  fetch(`${SCRIPT_URL}?id=${qrId}&ua=${encodeURIComponent(navigator.userAgent)}&ref=${encodeURIComponent(document.referrer)}`)
+    .catch(() => {}); // Silencieux si erreur
+}
+
+// Rediriger immédiatement
+window.location.replace(dest);
+</script>
+</head>
+<body style="font-family:sans-serif;background:#004e38;color:white;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">
+  <div style="text-align:center;">
+    <div style="font-size:48px;font-weight:900;letter-spacing:-.03em;margin-bottom:12px;">ILIA</div>
+    <div style="font-size:13px;opacity:.6;">Redirection en cours...</div>
+  </div>
+</body>
+</html>
