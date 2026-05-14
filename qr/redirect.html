@@ -6,7 +6,7 @@
 <script>
 // Config — Sheet ID et Apps Script URL
 const SHEET_ID = "1zXMdzQitv4djH_gRdOUOlDITJvQZ2uUnioBVo9mIPC4";
-const SCRIPT_URL = "APPS_SCRIPT_URL_PLACEHOLDER";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmx47DrVpn6l3INrBhqYaSJPRcRBlM9_23gmSZglgos8Ir2CEDY-kmC36Ygl2a8hgd/exec";
 
 // Lire le QR ID depuis l'URL : /qr/redirect.html?id=s1
 const params = new URLSearchParams(window.location.search);
@@ -26,7 +26,7 @@ const destinations = {
 const dest = destinations[qrId] || "https://www.instagram.com/iliarestaurant/";
 
 // Logger le scan via Apps Script (async, non bloquant)
-if (SCRIPT_URL !== "APPS_SCRIPT_URL_PLACEHOLDER") {
+if (SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbwmx47DrVpn6l3INrBhqYaSJPRcRBlM9_23gmSZglgos8Ir2CEDY-kmC36Ygl2a8hgd/exec") {
   fetch(`${SCRIPT_URL}?id=${qrId}&ua=${encodeURIComponent(navigator.userAgent)}&ref=${encodeURIComponent(document.referrer)}`)
     .catch(() => {}); // Silencieux si erreur
 }
