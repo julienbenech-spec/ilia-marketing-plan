@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ILIA</title>
+<script>
+var S = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
+var F = "https://www.instagram.com/iliarestaurant/";
+var id = new URLSearchParams(window.location.search).get("id") || "unknown";
+var done = false;
+function go(u) { if (!done) { done = true; window.location.replace(u); } }
+fetch(S + "?action=redirect&id=" + encodeURIComponent(id) + "&ua=" + encodeURIComponent(navigator.userAgent))
+  .then(function(r){return r.json()})
+  .then(function(d){go(d.url || F)})
+  .catch(function(){go(F)});
+setTimeout(function(){go(F)}, 4000);
+</script>
+</head>
+<body style="font-family:sans-serif;background:#004e38;color:white;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
+<div style="text-align:center"><div style="font-size:48px;font-weight:900">ILIA</div><div style="font-size:13px;opacity:.6;margin-top:8px">Redirection...</div></div>
+</body>
+</html>
