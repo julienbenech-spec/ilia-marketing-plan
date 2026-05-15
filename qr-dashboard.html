@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ILIA — QR Manager</title>
 <style>
-:root{--green:#004e38;--green-light:#e8f2ee;--cream:#f5f4f0;--linen:#eae8e1;--ink:#2c2c2a;--stone:#5f5e5a;--mist:#b4b2a9;--white:#ffffff;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,0.08)}
+:root{--green:#004e38;--green-light:#e8f2ee;--cream:#f5f4f0;--linen:#eae8e1;--ink:#2c2c2a;--stone:#5f5e5a;--mist:#b4b2a9;--white:#ffffff;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
 nav{background:var(--green);padding:0 24px;height:52px;display:flex;align-items:center;gap:24px}
@@ -14,29 +14,28 @@ nav{background:var(--green);padding:0 24px;height:52px;display:flex;align-items:
 .nav-tab.active{color:white;border-bottom-color:white}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
 .page{display:none}.page.active{display:block}
-.card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
-.section-title{font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:24px;margin-bottom:16px}
+.section-title{font-size:22px;font-weight:600;margin-bottom:6px}
 .section-sub{font-size:14px;color:var(--stone);margin-bottom:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
-.btn-primary{background:var(--green);color:white}.btn-primary:hover{background:#003828}
-.btn-secondary{background:var(--linen);color:var(--ink)}.btn-secondary:hover{background:#ddd}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--green);color:white}
+.btn-secondary{background:var(--linen);color:var(--ink)}
 .btn-sm{padding:6px 14px;font-size:12px}
-.btn-danger{background:#fee2e2;color:#991b1b}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.full{grid-column:1/-1}
 label{font-size:12px;font-weight:600;color:var(--stone);text-transform:uppercase;letter-spacing:.06em}
-input{border:1px solid var(--linen);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--ink);background:white;outline:none;font-family:inherit;transition:border-color .15s}
+input{border:1px solid var(--linen);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--ink);background:white;outline:none;font-family:inherit}
 input:focus{border-color:var(--green)}
 .qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.qr-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;box-shadow:var(--shadow)}
-.qr-name{font-size:15px;font-weight:600;color:var(--ink)}
+.qr-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px}
+.qr-name{font-size:15px;font-weight:600}
 .qr-id{font-size:11px;color:var(--mist);font-family:monospace;margin-top:2px}
 .qr-url{font-size:12px;color:var(--stone);margin:10px 0;word-break:break-all;background:var(--cream);padding:8px 10px;border-radius:6px}
 .qr-img{display:flex;justify-content:center;margin:12px 0}
 .qr-img img{width:120px;height:120px;border:1px solid var(--linen);border-radius:8px;padding:8px}
 .qr-actions{display:flex;gap:8px;flex-wrap:wrap}
-.badge-green{background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;display:inline-block}
+.badge-green{background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
 .stat-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;text-align:center}
 .stat-num{font-size:32px;font-weight:700;color:var(--green);margin-bottom:4px}
@@ -47,57 +46,47 @@ td{padding:12px;border-bottom:1px solid var(--linen);color:var(--stone)}
 td:first-child{color:var(--ink);font-weight:500}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:white;border-radius:var(--radius);padding:28px;width:90%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal{background:white;border-radius:var(--radius);padding:28px;width:90%;max-width:480px}
 .modal-title{font-size:17px;font-weight:600;margin-bottom:20px}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
-.notif{position:fixed;bottom:24px;right:24px;background:var(--ink);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transform:translateY(10px);transition:all .3s;z-index:200}
+.notif{position:fixed;bottom:24px;right:24px;background:var(--ink);color:white;padding:12px 20px;border-radius:8px;font-size:13px;opacity:0;transform:translateY(10px);transition:all .3s;z-index:200}
 .notif.show{opacity:1;transform:translateY(0)}
-.loading{text-align:center;padding:40px;color:var(--mist);font-size:14px}
-.header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.loading{text-align:center;padding:40px;color:var(--mist)}
+.status-msg{margin-top:10px;font-size:12px;color:var(--stone);min-height:18px}
 </style>
 </head>
 <body>
-
 <nav>
   <span class="nav-logo">ILIA QR</span>
-  <button class="nav-tab active" onclick="showPage('qrcodes')">QR Codes</button>
-  <button class="nav-tab" onclick="showPage('stats')">Stats</button>
-  <button class="nav-tab" onclick="showPage('create')">+ Nouveau</button>
+  <button class="nav-tab active" onclick="showPage('qrcodes',this)">QR Codes</button>
+  <button class="nav-tab" onclick="showPage('stats',this)">Stats</button>
+  <button class="nav-tab" onclick="showPage('create',this)">+ Nouveau</button>
 </nav>
 
 <div id="page-qrcodes" class="page active wrap">
-  <div class="header-row">
-    <div>
-      <div class="section-title">Mes QR Codes</div>
-      <div class="section-sub">Gérez vos QR codes et modifiez les URLs de destination</div>
-    </div>
-    <button class="btn btn-primary" onclick="showPage('create')">+ Nouveau QR</button>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+    <div><div class="section-title">Mes QR Codes</div><div class="section-sub">Gérez vos QR codes et modifiez les URLs</div></div>
+    <button class="btn btn-primary" onclick="showPage('create',null)">+ Nouveau QR</button>
   </div>
-  <div id="qr-list" class="qr-grid"><div class="loading">Chargement depuis le Sheet...</div></div>
+  <div id="qr-list" class="qr-grid"><div class="loading">Chargement...</div></div>
 </div>
 
 <div id="page-stats" class="page wrap">
   <div class="section-title">Statistiques</div>
-  <div class="section-sub">Suivi des scans par QR code</div>
+  <div class="section-sub">Suivi des scans</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total scans</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">Aujourd'hui</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-week">—</div><div class="stat-label">Cette semaine</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-week">—</div><div class="stat-label">7 derniers jours</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-qrcodes">—</div><div class="stat-label">QR actifs</div></div>
   </div>
   <div class="card">
-    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Détail par QR</div>
-    <div style="overflow-x:auto"><table>
-      <thead><tr><th>Nom</th><th>ID</th><th>URL</th><th>Scans</th><th>Dernier scan</th></tr></thead>
-      <tbody id="stats-table"><tr><td colspan="5" class="loading">Chargement...</td></tr></tbody>
-    </table></div>
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Par QR code</div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Nom</th><th>ID</th><th>URL</th><th>Scans</th><th>Dernier scan</th></tr></thead><tbody id="stats-table"><tr><td colspan="5" class="loading">Chargement...</td></tr></tbody></table></div>
   </div>
-  <div class="card">
-    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Historique</div>
-    <div style="overflow-x:auto"><table>
-      <thead><tr><th>Date</th><th>QR</th><th>URL</th><th>Device</th></tr></thead>
-      <tbody id="log-table"><tr><td colspan="4" class="loading">Chargement...</td></tr></tbody>
-    </table></div>
+  <div class="card" style="margin-top:16px">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Historique des scans</div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Date</th><th>QR</th><th>URL</th><th>Device</th></tr></thead><tbody id="log-table"><tr><td colspan="4" class="loading">Chargement...</td></tr></tbody></table></div>
   </div>
 </div>
 
@@ -107,18 +96,18 @@ td:first-child{color:var(--ink);font-weight:500}
   <div class="card">
     <div class="form-row">
       <div class="form-group"><label>Nom</label><input type="text" id="new-name" placeholder="Ex: Sac Rose Instagram"></div>
-      <div class="form-group"><label>ID (slug)</label><input type="text" id="new-id" placeholder="Ex: sac-rose-ig"></div>
+      <div class="form-group"><label>ID (slug court)</label><input type="text" id="new-id" placeholder="Ex: sac-rose-ig"></div>
       <div class="form-group full"><label>URL de destination</label><input type="url" id="new-url" placeholder="https://www.instagram.com/iliarestaurant/"></div>
     </div>
     <div id="qr-preview" style="display:none;margin:20px 0;text-align:center">
-      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:12px">Aperçu</div>
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:12px">Aperçu QR</div>
       <img id="qr-preview-img" src="" style="width:150px;height:150px;border:1px solid var(--linen);border-radius:8px;padding:8px">
     </div>
     <div style="display:flex;gap:12px;margin-top:8px">
       <button class="btn btn-secondary" onclick="previewQR()">👁 Aperçu</button>
       <button class="btn btn-primary" onclick="createQR()">✓ Créer</button>
     </div>
-    <div id="create-status" style="margin-top:12px;font-size:13px;color:var(--stone)"></div>
+    <div class="status-msg" id="create-status"></div>
   </div>
 </div>
 
@@ -128,10 +117,10 @@ td:first-child{color:var(--ink);font-weight:500}
     <input type="hidden" id="edit-id">
     <div class="form-group" style="margin-bottom:16px"><label>Nom</label><input type="text" id="edit-name"></div>
     <div class="form-group"><label>URL de destination</label><input type="url" id="edit-url"></div>
-    <div id="edit-status" style="margin-top:10px;font-size:12px;color:var(--stone)"></div>
+    <div class="status-msg" id="edit-status"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveEdit()">Enregistrer</button>
+      <button class="btn btn-primary" id="save-btn" onclick="saveEdit()">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -139,165 +128,159 @@ td:first-child{color:var(--ink);font-weight:500}
 <div class="notif" id="notif"></div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
-const BASE_URL = "https://julienbenech-spec.github.io/ilia-marketing-plan/qr/redirect.html";
-let qrCodes = [];
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
+var BASE_URL = "https://julienbenech-spec.github.io/ilia-marketing-plan/qr/redirect.html";
+var qrCodes = [];
 
-// ======= NAV =======
-function showPage(p) {
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
-  document.getElementById('page-' + p).classList.add('active');
-  event && event.target && event.target.classList.add('active');
+function showPage(p, btn) {
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+  document.querySelectorAll('.nav-tab').forEach(function(x){x.classList.remove('active')});
+  document.getElementById('page-'+p).classList.add('active');
+  if (btn) btn.classList.add('active');
   if (p === 'qrcodes') loadQRList();
   if (p === 'stats') loadStats();
 }
 
-// ======= LOAD QR LIST =======
-async function loadQRList() {
+function callScript(params, cb) {
+  var url = SCRIPT_URL + '?' + Object.keys(params).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(params[k])}).join('&');
+  var done = false;
+  var img = new Image();
+  img.onload = img.onerror = function() {
+    if (!done) { done = true; if (cb) cb(true); }
+  };
+  img.src = url;
+  setTimeout(function(){ if (!done) { done = true; if (cb) cb(true); }}, 3000);
+}
+
+function loadQRList() {
   document.getElementById('qr-list').innerHTML = '<div class="loading">Chargement...</div>';
-  try {
-    const r = await fetch(SCRIPT_URL + '?action=list');
-    const d = await r.json();
-    qrCodes = d.qrs || [];
-    renderQRList();
-  } catch(e) {
-    document.getElementById('qr-list').innerHTML = '<div class="loading">Erreur de chargement. Vérifiez la connexion.</div>';
-  }
+  fetch(SCRIPT_URL + '?action=list')
+    .then(function(r){return r.json()})
+    .then(function(d){ qrCodes = d.qrs || []; renderQRList(); })
+    .catch(function(){ document.getElementById('qr-list').innerHTML = '<div class="loading">Erreur de chargement</div>'; });
 }
 
 function renderQRList() {
-  const c = document.getElementById('qr-list');
+  var c = document.getElementById('qr-list');
   if (!qrCodes.length) { c.innerHTML = '<div class="loading">Aucun QR code</div>'; return; }
-  c.innerHTML = qrCodes.map(q => {
-    const trackUrl = BASE_URL + '?id=' + q.id;
-    const qrImg = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
+  c.innerHTML = qrCodes.map(function(q) {
+    var trackUrl = BASE_URL + '?id=' + q.id;
+    var qrImg = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
     return '<div class="qr-card">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">' +
-      '<div><div class="qr-name">' + q.name + '</div><div class="qr-id">ID: ' + q.id + '</div></div>' +
+      '<div><div class="qr-name">'+q.name+'</div><div class="qr-id">ID: '+q.id+'</div></div>' +
       '<span class="badge-green">Actif</span></div>' +
-      '<div class="qr-url">' + q.url + '</div>' +
-      '<div class="qr-img"><img src="' + qrImg + '" alt="QR ' + q.id + '"></div>' +
+      '<div class="qr-url">'+q.url+'</div>' +
+      '<div class="qr-img"><img src="'+qrImg+'" alt="QR '+q.id+'"></div>' +
       '<div class="qr-actions">' +
-      '<button class="btn btn-secondary btn-sm" onclick="editQR(\'' + q.id + '\')">✏️ Modifier URL</button>' +
-      '<button class="btn btn-secondary btn-sm" onclick="copyLink(\'' + trackUrl + '\')">🔗 Copier</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="editQR(\''+q.id+'\')">✏️ Modifier URL</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="copyLink(\''+trackUrl+'\')">🔗 Copier</button>' +
+      '<a href="'+qrImg.replace('120x120','300x300')+'" download="ILIA-QR-'+q.id+'.png" class="btn btn-secondary btn-sm">⬇️ PNG</a>' +
       '</div></div>';
   }).join('');
 }
 
-// ======= EDIT =======
 function editQR(id) {
-  const q = qrCodes.find(x => x.id === id);
+  var q = qrCodes.find(function(x){return x.id===id});
   if (!q) return;
   document.getElementById('edit-id').value = id;
   document.getElementById('edit-name').value = q.name;
   document.getElementById('edit-url').value = q.url;
   document.getElementById('edit-status').textContent = '';
+  document.getElementById('save-btn').disabled = false;
   document.getElementById('modal-edit').classList.add('open');
 }
 
-async function saveEdit() {
-  const id = document.getElementById('edit-id').value;
-  const name = document.getElementById('edit-name').value.trim();
-  const url = document.getElementById('edit-url').value.trim();
+function saveEdit() {
+  var id = document.getElementById('edit-id').value;
+  var name = document.getElementById('edit-name').value.trim();
+  var url = document.getElementById('edit-url').value.trim();
   if (!url) { notify('URL requise'); return; }
   document.getElementById('edit-status').textContent = 'Enregistrement...';
-  try {
-    const r = await fetch(SCRIPT_URL + '?action=update&id=' + encodeURIComponent(id) + '&url=' + encodeURIComponent(url) + '&name=' + encodeURIComponent(name));
-    const d = await r.json();
-    if (d.success) {
-      closeModal();
-      notify('✅ URL mise à jour !');
-      loadQRList();
-    } else {
-      document.getElementById('edit-status').textContent = 'Erreur: ' + (d.error || 'inconnue');
-    }
-  } catch(e) {
-    document.getElementById('edit-status').textContent = 'Erreur réseau: ' + e.message;
-  }
+  document.getElementById('save-btn').disabled = true;
+  callScript({action:'update', id:id, url:url, name:name}, function() {
+    closeModal();
+    notify('✅ URL mise à jour !');
+    setTimeout(loadQRList, 500);
+  });
 }
 
 function closeModal() { document.getElementById('modal-edit').classList.remove('open'); }
 
-// ======= CREATE =======
 function previewQR() {
-  const url = document.getElementById('new-url').value.trim();
-  const id = document.getElementById('new-id').value.trim();
-  if (!url && !id) { notify('Remplis au moins l\'URL ou l\'ID'); return; }
-  const trackUrl = BASE_URL + '?id=' + (id || 'preview');
-  document.getElementById('qr-preview-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(url || trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
+  var url = document.getElementById('new-url').value.trim();
+  var id = document.getElementById('new-id').value.trim();
+  if (!url && !id) { notify("Remplis l'URL ou l'ID"); return; }
+  document.getElementById('qr-preview-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(url || BASE_URL+'?id='+id) + '&color=004e38&bgcolor=ffffff&margin=2';
   document.getElementById('qr-preview').style.display = 'block';
 }
 
-async function createQR() {
-  const name = document.getElementById('new-name').value.trim();
-  const id = document.getElementById('new-id').value.trim().toLowerCase().replace(/\s+/g, '-');
-  const url = document.getElementById('new-url').value.trim();
+function createQR() {
+  var name = document.getElementById('new-name').value.trim();
+  var id = document.getElementById('new-id').value.trim().toLowerCase().replace(/\s+/g,'-');
+  var url = document.getElementById('new-url').value.trim();
   if (!name || !id || !url) { notify('Remplis tous les champs'); return; }
-  const status = document.getElementById('create-status');
-  status.textContent = 'Création en cours...';
-  try {
-    const r = await fetch(SCRIPT_URL + '?action=create&id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url));
-    const d = await r.json();
-    if (d.success) {
-      document.getElementById('new-name').value = '';
-      document.getElementById('new-id').value = '';
-      document.getElementById('new-url').value = '';
-      document.getElementById('qr-preview').style.display = 'none';
-      status.textContent = '';
-      notify('✅ QR code créé !');
-      showPage('qrcodes');
-    } else {
-      status.textContent = 'Erreur: ' + (d.error || 'inconnue');
-    }
-  } catch(e) {
-    status.textContent = 'Erreur réseau: ' + e.message;
-  }
+  document.getElementById('create-status').textContent = 'Création en cours...';
+  callScript({action:'create', id:id, name:name, url:url}, function() {
+    document.getElementById('new-name').value = '';
+    document.getElementById('new-id').value = '';
+    document.getElementById('new-url').value = '';
+    document.getElementById('qr-preview').style.display = 'none';
+    document.getElementById('create-status').textContent = '';
+    notify('✅ QR code créé !');
+    showPage('qrcodes', document.querySelector('.nav-tab'));
+  });
 }
 
-// ======= STATS =======
-async function loadStats() {
-  try {
-    const r = await fetch(SCRIPT_URL + '?action=stats');
-    const d = await r.json();
-    const logs = d.logs || [], config = d.config || [];
-    const today = new Date().toLocaleDateString('fr-FR');
-    const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
-    document.getElementById('stat-total').textContent = logs.length;
-    document.getElementById('stat-today').textContent = logs.filter(l => l.timestamp && l.timestamp.startsWith(today.split('/').reverse().join('/'))).length;
-    document.getElementById('stat-week').textContent = logs.length;
-    document.getElementById('stat-qrcodes').textContent = config.length;
-    const byQR = {}, lastScan = {};
-    logs.forEach(l => { if(l.qr_id){byQR[l.qr_id]=(byQR[l.qr_id]||0)+1; lastScan[l.qr_id]=l.timestamp;} });
-    document.getElementById('stats-table').innerHTML = config.map(q =>
-      '<tr><td>' + q.name + '</td><td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">' + q.id + '</code></td>' +
-      '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + q.url + '</td>' +
-      '<td><span class="badge-green">📊 ' + (byQR[q.id]||0) + '</span></td>' +
-      '<td>' + (lastScan[q.id]||'—') + '</td></tr>'
-    ).join('') || '<tr><td colspan="5">Aucun QR</td></tr>';
-    document.getElementById('log-table').innerHTML = logs.length ?
-      logs.slice(-50).reverse().map(l =>
-        '<tr><td>' + l.timestamp + '</td><td>' + l.name + '</td>' +
-        '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + l.url + '</td>' +
-        '<td>' + l.device + '</td></tr>'
-      ).join('') :
-      '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--mist)">Aucun scan enregistré pour l\'instant.</td></tr>';
-  } catch(e) {
-    document.getElementById('stats-table').innerHTML = '<tr><td colspan="5">Erreur: ' + e.message + '</td></tr>';
-  }
+function loadStats() {
+  fetch(SCRIPT_URL + '?action=stats')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var logs = d.logs || [], config = d.config || [];
+      var today = new Date();
+      var todayStr = (today.getDate()<10?'0':'')+today.getDate()+'/'+(today.getMonth()<9?'0':'')+(today.getMonth()+1)+'/'+today.getFullYear();
+      var weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+      var todayCount = 0, weekCount = 0;
+      var byQR = {}, lastScan = {};
+      logs.forEach(function(l) {
+        if (!l.qr_id) return;
+        byQR[l.qr_id] = (byQR[l.qr_id]||0) + 1;
+        lastScan[l.qr_id] = l.timestamp;
+        if (l.timestamp && l.timestamp.indexOf(todayStr) === 0) todayCount++;
+        weekCount++;
+      });
+      document.getElementById('stat-total').textContent = logs.length;
+      document.getElementById('stat-today').textContent = todayCount;
+      document.getElementById('stat-week').textContent = weekCount;
+      document.getElementById('stat-qrcodes').textContent = config.length;
+      document.getElementById('stats-table').innerHTML = config.map(function(q) {
+        return '<tr><td>'+q.name+'</td><td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">'+q.id+'</code></td>' +
+          '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+q.url+'</td>' +
+          '<td><span class="badge-green">📊 '+(byQR[q.id]||0)+'</span></td>' +
+          '<td>'+(lastScan[q.id]||'—')+'</td></tr>';
+      }).join('') || '<tr><td colspan="5">Aucun QR</td></tr>';
+      document.getElementById('log-table').innerHTML = logs.length ?
+        logs.slice(-50).reverse().map(function(l) {
+          return '<tr><td>'+l.timestamp+'</td><td>'+(l.name||l.qr_id)+'</td>' +
+            '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.url+'</td>' +
+            '<td>'+l.device+'</td></tr>';
+        }).join('') :
+        '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--mist)">Aucun scan enregistré.</td></tr>';
+    })
+    .catch(function(e) {
+      document.getElementById('stats-table').innerHTML = '<tr><td colspan="5" style="color:red">Erreur: '+e.message+'</td></tr>';
+    });
 }
 
-// ======= UTILS =======
-function copyLink(url) { navigator.clipboard.writeText(url).then(() => notify('🔗 Lien copié !')); }
+function copyLink(url) { navigator.clipboard.writeText(url).then(function(){notify('🔗 Lien copié !')}); }
+
 function notify(msg) {
-  const n = document.getElementById('notif');
+  var n = document.getElementById('notif');
   n.textContent = msg; n.classList.add('show');
-  setTimeout(() => n.classList.remove('show'), 3000);
+  setTimeout(function(){n.classList.remove('show')}, 3000);
 }
 
-// Init
 loadQRList();
 </script>
 </body>
 </html>
-<!-- Fri May 15 11:02:25 CEST 2026 -->
