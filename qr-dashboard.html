@@ -5,22 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ILIA — QR Manager</title>
 <style>
-:root{--green:#004e38;--green-light:#e8f2ee;--cream:#f5f4f0;--linen:#eae8e1;--ink:#2c2c2a;--stone:#5f5e5a;--mist:#b4b2a9;--white:#ffffff;--radius:12px}
+:root{--green:#004e38;--green-light:#e8f2ee;--cream:#f5f4f0;--linen:#eae8e1;--ink:#2c2c2a;--stone:#5f5e5a;--mist:#b4b2a9;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
 nav{background:var(--green);padding:0 24px;height:52px;display:flex;align-items:center;gap:24px}
 .nav-logo{font-size:18px;font-weight:900;color:white;letter-spacing:-.02em;margin-right:auto}
-.nav-tab{color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;padding:6px 0;border-bottom:2px solid transparent;text-decoration:none;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+.nav-tab{color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;padding:6px 0;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
 .nav-tab.active{color:white;border-bottom-color:white}
 .wrap{max-width:960px;margin:0 auto;padding:32px 24px}
 .page{display:none}.page.active{display:block}
 .card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:24px;margin-bottom:16px}
 .section-title{font-size:22px;font-weight:600;margin-bottom:6px}
 .section-sub{font-size:14px;color:var(--stone);margin-bottom:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none}
 .btn-primary{background:var(--green);color:white}
 .btn-secondary{background:var(--linen);color:var(--ink)}
-.btn-sm{padding:6px 14px;font-size:12px}
+.btn-danger{background:#fee2e2;color:#991b1b}
+.btn-sm{padding:6px 12px;font-size:12px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.full{grid-column:1/-1}
@@ -34,7 +35,7 @@ input:focus{border-color:var(--green)}
 .qr-url{font-size:12px;color:var(--stone);margin:10px 0;word-break:break-all;background:var(--cream);padding:8px 10px;border-radius:6px}
 .qr-img{display:flex;justify-content:center;margin:12px 0}
 .qr-img img{width:120px;height:120px;border:1px solid var(--linen);border-radius:8px;padding:8px}
-.qr-actions{display:flex;gap:8px;flex-wrap:wrap}
+.qr-actions{display:flex;gap:6px;flex-wrap:wrap}
 .badge-green{background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
 .stat-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;text-align:center}
@@ -53,6 +54,7 @@ td:first-child{color:var(--ink);font-weight:500}
 .notif.show{opacity:1;transform:translateY(0)}
 .loading{text-align:center;padding:40px;color:var(--mist)}
 .status-msg{margin-top:10px;font-size:12px;color:var(--stone);min-height:18px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}.stats-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -73,7 +75,7 @@ td:first-child{color:var(--ink);font-weight:500}
 
 <div id="page-stats" class="page wrap">
   <div class="section-title">Statistiques</div>
-  <div class="section-sub">Suivi des scans</div>
+  <div class="section-sub">Suivi des scans en temps réel</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total scans</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">Aujourd'hui</div></div>
@@ -128,8 +130,8 @@ td:first-child{color:var(--ink);font-weight:500}
 <div class="notif" id="notif"></div>
 
 <script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
-var BASE_URL = "https://julienbenech-spec.github.io/ilia-marketing-plan/qr/redirect.html";
+var S = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
+var BASE = "https://julienbenech-spec.github.io/ilia-marketing-plan/qr/redirect.html";
 var qrCodes = [];
 
 function showPage(p, btn) {
@@ -142,30 +144,31 @@ function showPage(p, btn) {
 }
 
 function callScript(params, cb) {
-  var url = SCRIPT_URL + '?' + Object.keys(params).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(params[k])}).join('&');
-  var done = false;
-  var img = new Image();
-  img.onload = img.onerror = function() {
-    if (!done) { done = true; if (cb) cb(true); }
-  };
-  img.src = url;
-  setTimeout(function(){ if (!done) { done = true; if (cb) cb(true); }}, 3000);
+  var url = S + '?' + Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k])}).join('&');
+  var cbName = '_cb_' + Date.now();
+  window[cbName] = function(d) { delete window[cbName]; if (cb) cb(d); };
+  var s = document.createElement('script');
+  s.src = url + '&callback=' + cbName;
+  s.onerror = function() { delete window[cbName]; if (cb) cb({error:'network error'}); };
+  setTimeout(function(){ if (window[cbName]) { delete window[cbName]; if (cb) cb({error:'timeout'}); }}, 5000);
+  document.head.appendChild(s);
 }
 
 function loadQRList() {
   document.getElementById('qr-list').innerHTML = '<div class="loading">Chargement...</div>';
-  fetch(SCRIPT_URL + '?action=list')
-    .then(function(r){return r.json()})
-    .then(function(d){ qrCodes = d.qrs || []; renderQRList(); })
-    .catch(function(){ document.getElementById('qr-list').innerHTML = '<div class="loading">Erreur de chargement</div>'; });
+  callScript({action:'list'}, function(d) {
+    qrCodes = d.qrs || [];
+    renderQRList();
+  });
 }
 
 function renderQRList() {
   var c = document.getElementById('qr-list');
   if (!qrCodes.length) { c.innerHTML = '<div class="loading">Aucun QR code</div>'; return; }
   c.innerHTML = qrCodes.map(function(q) {
-    var trackUrl = BASE_URL + '?id=' + q.id;
+    var trackUrl = BASE + '?id=' + q.id;
     var qrImg = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
+    var qrImgLg = qrImg.replace('120x120','300x300');
     return '<div class="qr-card">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">' +
       '<div><div class="qr-name">'+q.name+'</div><div class="qr-id">ID: '+q.id+'</div></div>' +
@@ -173,9 +176,10 @@ function renderQRList() {
       '<div class="qr-url">'+q.url+'</div>' +
       '<div class="qr-img"><img src="'+qrImg+'" alt="QR '+q.id+'"></div>' +
       '<div class="qr-actions">' +
-      '<button class="btn btn-secondary btn-sm" onclick="editQR(\''+q.id+'\')">✏️ Modifier URL</button>' +
-      '<button class="btn btn-secondary btn-sm" onclick="copyLink(\''+trackUrl+'\')">🔗 Copier</button>' +
-      '<a href="'+qrImg.replace('120x120','300x300')+'" download="ILIA-QR-'+q.id+'.png" class="btn btn-secondary btn-sm">⬇️ PNG</a>' +
+      '<button class="btn btn-secondary btn-sm" onclick="editQR(\''+q.id+'\')">✏️ URL</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="copyLink(\''+trackUrl+'\')">🔗 Lien</button>' +
+      '<a href="'+qrImgLg+'" download="ILIA-QR-'+q.id+'.png" class="btn btn-secondary btn-sm">⬇️ PNG</a>' +
+      '<button class="btn btn-danger btn-sm" onclick="deleteQR(\''+q.id+'\',\''+q.name+'\')">🗑</button>' +
       '</div></div>';
   }).join('');
 }
@@ -198,9 +202,19 @@ function saveEdit() {
   if (!url) { notify('URL requise'); return; }
   document.getElementById('edit-status').textContent = 'Enregistrement...';
   document.getElementById('save-btn').disabled = true;
-  callScript({action:'update', id:id, url:url, name:name}, function() {
+  callScript({action:'update', id:id, url:url, name:name}, function(d) {
+    if (d.error) { document.getElementById('edit-status').textContent = 'Erreur: '+d.error; document.getElementById('save-btn').disabled = false; return; }
     closeModal();
     notify('✅ URL mise à jour !');
+    setTimeout(loadQRList, 500);
+  });
+}
+
+function deleteQR(id, name) {
+  if (!confirm('Supprimer "'+name+'" ?\nCette action est irréversible.')) return;
+  callScript({action:'delete', id:id}, function(d) {
+    if (d.error) { notify('Erreur: '+d.error); return; }
+    notify('🗑 Supprimé : '+name);
     setTimeout(loadQRList, 500);
   });
 }
@@ -211,7 +225,7 @@ function previewQR() {
   var url = document.getElementById('new-url').value.trim();
   var id = document.getElementById('new-id').value.trim();
   if (!url && !id) { notify("Remplis l'URL ou l'ID"); return; }
-  document.getElementById('qr-preview-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(url || BASE_URL+'?id='+id) + '&color=004e38&bgcolor=ffffff&margin=2';
+  document.getElementById('qr-preview-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+encodeURIComponent(url || BASE+'?id='+id)+'&color=004e38&bgcolor=ffffff&margin=2';
   document.getElementById('qr-preview').style.display = 'block';
 }
 
@@ -221,7 +235,8 @@ function createQR() {
   var url = document.getElementById('new-url').value.trim();
   if (!name || !id || !url) { notify('Remplis tous les champs'); return; }
   document.getElementById('create-status').textContent = 'Création en cours...';
-  callScript({action:'create', id:id, name:name, url:url}, function() {
+  callScript({action:'create', id:id, name:name, url:url}, function(d) {
+    if (d.error) { document.getElementById('create-status').textContent = 'Erreur: '+d.error; return; }
     document.getElementById('new-name').value = '';
     document.getElementById('new-id').value = '';
     document.getElementById('new-url').value = '';
@@ -233,43 +248,41 @@ function createQR() {
 }
 
 function loadStats() {
-  fetch(SCRIPT_URL + '?action=stats')
-    .then(function(r){return r.json()})
-    .then(function(d){
-      var logs = d.logs || [], config = d.config || [];
-      var today = new Date();
-      var todayStr = (today.getDate()<10?'0':'')+today.getDate()+'/'+(today.getMonth()<9?'0':'')+(today.getMonth()+1)+'/'+today.getFullYear();
-      var weekAgo = new Date(Date.now() - 7*24*60*60*1000);
-      var todayCount = 0, weekCount = 0;
-      var byQR = {}, lastScan = {};
-      logs.forEach(function(l) {
-        if (!l.qr_id) return;
-        byQR[l.qr_id] = (byQR[l.qr_id]||0) + 1;
-        lastScan[l.qr_id] = l.timestamp;
-        if (l.timestamp && l.timestamp.indexOf(todayStr) === 0) todayCount++;
-        weekCount++;
-      });
-      document.getElementById('stat-total').textContent = logs.length;
-      document.getElementById('stat-today').textContent = todayCount;
-      document.getElementById('stat-week').textContent = weekCount;
-      document.getElementById('stat-qrcodes').textContent = config.length;
-      document.getElementById('stats-table').innerHTML = config.map(function(q) {
-        return '<tr><td>'+q.name+'</td><td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">'+q.id+'</code></td>' +
-          '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+q.url+'</td>' +
-          '<td><span class="badge-green">📊 '+(byQR[q.id]||0)+'</span></td>' +
-          '<td>'+(lastScan[q.id]||'—')+'</td></tr>';
-      }).join('') || '<tr><td colspan="5">Aucun QR</td></tr>';
-      document.getElementById('log-table').innerHTML = logs.length ?
-        logs.slice(-50).reverse().map(function(l) {
-          return '<tr><td>'+l.timestamp+'</td><td>'+(l.name||l.qr_id)+'</td>' +
-            '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.url+'</td>' +
-            '<td>'+l.device+'</td></tr>';
-        }).join('') :
-        '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--mist)">Aucun scan enregistré.</td></tr>';
-    })
-    .catch(function(e) {
-      document.getElementById('stats-table').innerHTML = '<tr><td colspan="5" style="color:red">Erreur: '+e.message+'</td></tr>';
+  document.getElementById('stats-table').innerHTML = '<tr><td colspan="5" class="loading">Chargement...</td></tr>';
+  callScript({action:'stats'}, function(d) {
+    var logs = d.logs || [], config = d.config || [];
+    var today = new Date();
+    var dd = (today.getDate()<10?'0':'')+today.getDate();
+    var mm = (today.getMonth()<9?'0':'')+(today.getMonth()+1);
+    var yyyy = today.getFullYear();
+    var todayStr = dd+'/'+mm+'/'+yyyy;
+    var todayCount = 0;
+    var byQR = {}, lastScan = {};
+    logs.forEach(function(l) {
+      if (!l.qr_id) return;
+      byQR[l.qr_id] = (byQR[l.qr_id]||0) + 1;
+      lastScan[l.qr_id] = l.timestamp;
+      if (l.timestamp && l.timestamp.indexOf(todayStr) === 0) todayCount++;
     });
+    document.getElementById('stat-total').textContent = logs.length;
+    document.getElementById('stat-today').textContent = todayCount;
+    document.getElementById('stat-week').textContent = logs.length;
+    document.getElementById('stat-qrcodes').textContent = config.length;
+    document.getElementById('stats-table').innerHTML = config.map(function(q) {
+      return '<tr><td>'+q.name+'</td>' +
+        '<td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">'+q.id+'</code></td>' +
+        '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+q.url+'</td>' +
+        '<td><span class="badge-green">📊 '+(byQR[q.id]||0)+'</span></td>' +
+        '<td>'+(lastScan[q.id]||'—')+'</td></tr>';
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--mist)">Aucun QR</td></tr>';
+    document.getElementById('log-table').innerHTML = logs.length ?
+      logs.slice(-50).reverse().map(function(l) {
+        return '<tr><td>'+l.timestamp+'</td><td>'+(l.name||l.qr_id)+'</td>' +
+          '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.url+'</td>' +
+          '<td>'+l.device+'</td></tr>';
+      }).join('') :
+      '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--mist)">Aucun scan enregistré.</td></tr>';
+  });
 }
 
 function copyLink(url) { navigator.clipboard.writeText(url).then(function(){notify('🔗 Lien copié !')}); }
