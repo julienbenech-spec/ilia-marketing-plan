@@ -35,7 +35,7 @@ input:focus{border-color:var(--green)}
 .qr-url{font-size:12px;color:var(--stone);margin:10px 0;word-break:break-all;background:var(--cream);padding:8px 10px;border-radius:6px}
 .qr-img{display:flex;justify-content:center;margin:12px 0}
 .qr-img img{width:120px;height:120px;border:1px solid var(--linen);border-radius:8px;padding:8px}
-.qr-actions{display:flex;gap:6px;flex-wrap:wrap}
+.qr-actions{display:flex;gap:6px;flex-wrap:nowrap;align-items:center}
 .badge-green{background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
 .stat-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;text-align:center}
@@ -272,7 +272,7 @@ function loadStats() {
       return '<tr><td>'+q.name+'</td>' +
         '<td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">'+q.id+'</code></td>' +
         '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+q.url+'</td>' +
-        '<td><span class="badge-green">📊 '+(byQR[q.id]||0)+'</span></td>' +
+        '<td><span class="badge-green" style="white-space:nowrap">📊 '+(byQR[q.id]||0)+'</span></td>' +
         '<td>'+(lastScan[q.id]||'—')+'</td></tr>';
     }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--mist)">Aucun QR</td></tr>';
     document.getElementById('log-table').innerHTML = logs.length ?
