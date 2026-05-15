@@ -4,28 +4,19 @@
 <meta charset="UTF-8">
 <title>ILIA</title>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
-const FALLBACK = "https://www.instagram.com/iliarestaurant/";
-const params = new URLSearchParams(window.location.search);
-const qrId = params.get("id") || "unknown";
-let redirected = false;
-
-function go(url) {
-  if (!redirected) { redirected = true; window.location.replace(url); }
-}
-
-fetch(SCRIPT_URL + "?action=redirect&id=" + encodeURIComponent(qrId) + "&ua=" + encodeURIComponent(navigator.userAgent))
-  .then(r => r.json())
-  .then(d => go(d.url || FALLBACK))
-  .catch(() => go(FALLBACK));
-
-setTimeout(() => go(FALLBACK), 4000);
+var S = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
+var F = "https://www.instagram.com/iliarestaurant/";
+var id = new URLSearchParams(window.location.search).get("id") || "unknown";
+var done = false;
+function go(u) { if (!done) { done = true; window.location.replace(u); } }
+fetch(S + "?action=redirect&id=" + encodeURIComponent(id) + "&ua=" + encodeURIComponent(navigator.userAgent))
+  .then(function(r){return r.json()})
+  .then(function(d){go(d.url || F)})
+  .catch(function(){go(F)});
+setTimeout(function(){go(F)}, 5000);
 </script>
 </head>
 <body style="font-family:sans-serif;background:#004e38;color:white;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
-  <div style="text-align:center">
-    <div style="font-size:48px;font-weight:900;letter-spacing:-.03em;margin-bottom:12px">ILIA</div>
-    <div style="font-size:13px;opacity:.6">Redirection...</div>
-  </div>
+<div style="text-align:center"><div style="font-size:48px;font-weight:900">ILIA</div><div style="font-size:13px;opacity:.6;margin-top:8px">Redirection...</div></div>
 </body>
 </html>
