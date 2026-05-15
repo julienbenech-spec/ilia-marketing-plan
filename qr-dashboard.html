@@ -5,235 +5,130 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ILIA — QR Manager</title>
 <style>
-  :root {
-    --green: #004e38;
-    --green-light: #e8f2ee;
-    --rose: #e9b2a8;
-    --cream: #f5f4f0;
-    --linen: #eae8e1;
-    --ink: #2c2c2a;
-    --stone: #5f5e5a;
-    --mist: #b4b2a9;
-    --white: #ffffff;
-    --radius: 12px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
-
-  /* NAV */
-  nav { background: var(--green); padding: 0 24px; height: 52px; display: flex; align-items: center; gap: 24px; }
-  .nav-logo { font-size: 18px; font-weight: 900; color: white; letter-spacing: -.02em; margin-right: auto; }
-  .nav-tab { color: rgba(255,255,255,.6); font-size: 13px; font-weight: 500; cursor: pointer; padding: 6px 0; border-bottom: 2px solid transparent; text-decoration: none; }
-  .nav-tab.active { color: white; border-bottom-color: white; }
-
-  /* LAYOUT */
-  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* CARDS */
-  .card { background: white; border-radius: var(--radius); border: 1px solid var(--linen); padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px; }
-  .card-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--mist); margin-bottom: 16px; }
-
-  /* FORM */
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 12px; font-weight: 600; color: var(--stone); text-transform: uppercase; letter-spacing: .06em; }
-  input, select { border: 1px solid var(--linen); border-radius: 8px; padding: 10px 14px; font-size: 14px; color: var(--ink); background: white; outline: none; font-family: inherit; transition: border-color .15s; }
-  input:focus, select:focus { border-color: var(--green); }
-  input::placeholder { color: var(--mist); }
-
-  /* BUTTONS */
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 99px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
-  .btn-primary { background: var(--green); color: white; }
-  .btn-primary:hover { background: #003828; }
-  .btn-secondary { background: var(--linen); color: var(--ink); }
-  .btn-secondary:hover { background: #ddd; }
-  .btn-danger { background: #fee2e2; color: #991b1b; }
-  .btn-danger:hover { background: #fecaca; }
-  .btn-sm { padding: 6px 14px; font-size: 12px; }
-
-  /* QR LIST */
-  .qr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .qr-card { background: white; border-radius: var(--radius); border: 1px solid var(--linen); padding: 20px; box-shadow: var(--shadow); }
-  .qr-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-  .qr-name { font-size: 15px; font-weight: 600; color: var(--ink); }
-  .qr-id { font-size: 11px; color: var(--mist); font-family: monospace; margin-top: 2px; }
-  .qr-url { font-size: 12px; color: var(--stone); margin-bottom: 12px; word-break: break-all; background: var(--cream); padding: 8px 10px; border-radius: 6px; }
-  .qr-img { display: flex; justify-content: center; margin: 12px 0; }
-  .qr-img img { width: 120px; height: 120px; border: 1px solid var(--linen); border-radius: 8px; padding: 8px; }
-  .qr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .scan-count { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green); padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
-
-  /* STATS */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-  .stat-card { background: white; border-radius: var(--radius); border: 1px solid var(--linen); padding: 20px; text-align: center; }
-  .stat-num { font-size: 32px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
-  .stat-label { font-size: 12px; color: var(--stone); }
-
-  /* TABLE */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--mist); padding: 10px 12px; border-bottom: 1px solid var(--linen); }
-  td { padding: 12px; border-bottom: 1px solid var(--linen); color: var(--stone); }
-  td:first-child { color: var(--ink); font-weight: 500; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--cream); }
-
-  /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: white; border-radius: var(--radius); padding: 28px; width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
-  .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
-  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
-
-  /* BADGES */
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
-  .badge-green { background: var(--green-light); color: var(--green); }
-  .badge-gray { background: var(--linen); color: var(--stone); }
-
-  /* COLOR PICKER */
-  .color-options { display: flex; gap: 10px; margin-top: 8px; }
-  .color-opt { width: 32px; height: 32px; border-radius: 6px; border: 2px solid transparent; cursor: pointer; transition: border-color .15s; }
-  .color-opt.selected { border-color: var(--green); }
-  .color-opt-bw { background: white; border: 2px solid #ddd; }
-  .color-opt-green { background: white; border: 2px solid var(--green); }
-  .color-opt-rose { background: var(--rose); }
-
-  /* SECTION TITLE */
-  .section-title { font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-  .section-sub { font-size: 14px; color: var(--stone); margin-bottom: 24px; }
-
-  @media (max-width: 600px) {
-    .form-row { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* LOADING */
-  .loading { text-align: center; padding: 40px; color: var(--mist); font-size: 14px; }
-  .empty { text-align: center; padding: 60px 20px; color: var(--mist); }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-
-  /* NOTIFICATION */
-  .notif { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: white; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transform: translateY(10px); transition: all .3s; z-index: 200; }
-  .notif.show { opacity: 1; transform: translateY(0); }
+:root{--green:#004e38;--green-light:#e8f2ee;--cream:#f5f4f0;--linen:#eae8e1;--ink:#2c2c2a;--stone:#5f5e5a;--mist:#b4b2a9;--white:#ffffff;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
+nav{background:var(--green);padding:0 24px;height:52px;display:flex;align-items:center;gap:24px}
+.nav-logo{font-size:18px;font-weight:900;color:white;letter-spacing:-.02em;margin-right:auto}
+.nav-tab{color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;padding:6px 0;border-bottom:2px solid transparent;text-decoration:none;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+.nav-tab.active{color:white;border-bottom-color:white}
+.wrap{max-width:960px;margin:0 auto;padding:32px 24px}
+.page{display:none}.page.active{display:block}
+.card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+.section-title{font-size:22px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.section-sub{font-size:14px;color:var(--stone);margin-bottom:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-primary{background:var(--green);color:white}.btn-primary:hover{background:#003828}
+.btn-secondary{background:var(--linen);color:var(--ink)}.btn-secondary:hover{background:#ddd}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-danger{background:#fee2e2;color:#991b1b}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+label{font-size:12px;font-weight:600;color:var(--stone);text-transform:uppercase;letter-spacing:.06em}
+input{border:1px solid var(--linen);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--ink);background:white;outline:none;font-family:inherit;transition:border-color .15s}
+input:focus{border-color:var(--green)}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.qr-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;box-shadow:var(--shadow)}
+.qr-name{font-size:15px;font-weight:600;color:var(--ink)}
+.qr-id{font-size:11px;color:var(--mist);font-family:monospace;margin-top:2px}
+.qr-url{font-size:12px;color:var(--stone);margin:10px 0;word-break:break-all;background:var(--cream);padding:8px 10px;border-radius:6px}
+.qr-img{display:flex;justify-content:center;margin:12px 0}
+.qr-img img{width:120px;height:120px;border:1px solid var(--linen);border-radius:8px;padding:8px}
+.qr-actions{display:flex;gap:8px;flex-wrap:wrap}
+.badge-green{background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;display:inline-block}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:white;border-radius:var(--radius);border:1px solid var(--linen);padding:20px;text-align:center}
+.stat-num{font-size:32px;font-weight:700;color:var(--green);margin-bottom:4px}
+.stat-label{font-size:12px;color:var(--stone)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);padding:10px 12px;border-bottom:1px solid var(--linen)}
+td{padding:12px;border-bottom:1px solid var(--linen);color:var(--stone)}
+td:first-child{color:var(--ink);font-weight:500}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:var(--radius);padding:28px;width:90%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:17px;font-weight:600;margin-bottom:20px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.notif{position:fixed;bottom:24px;right:24px;background:var(--ink);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transform:translateY(10px);transition:all .3s;z-index:200}
+.notif.show{opacity:1;transform:translateY(0)}
+.loading{text-align:center;padding:40px;color:var(--mist);font-size:14px}
+.header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
 </style>
 </head>
 <body>
 
 <nav>
   <span class="nav-logo">ILIA QR</span>
-  <a class="nav-tab active" onclick="showPage('qrcodes')">QR Codes</a>
-  <a class="nav-tab" onclick="showPage('stats')">Stats</a>
-  <a class="nav-tab" onclick="showPage('create')">+ Nouveau</a>
+  <button class="nav-tab active" onclick="showPage('qrcodes')">QR Codes</button>
+  <button class="nav-tab" onclick="showPage('stats')">Stats</button>
+  <button class="nav-tab" onclick="showPage('create')">+ Nouveau</button>
 </nav>
 
-<!-- PAGE: QR CODES -->
 <div id="page-qrcodes" class="page active wrap">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+  <div class="header-row">
     <div>
       <div class="section-title">Mes QR Codes</div>
       <div class="section-sub">Gérez vos QR codes et modifiez les URLs de destination</div>
     </div>
     <button class="btn btn-primary" onclick="showPage('create')">+ Nouveau QR</button>
   </div>
-  <div id="qr-list" class="qr-grid">
-    <div class="loading">Chargement...</div>
-  </div>
+  <div id="qr-list" class="qr-grid"><div class="loading">Chargement depuis le Sheet...</div></div>
 </div>
 
-<!-- PAGE: STATS -->
 <div id="page-stats" class="page wrap">
   <div class="section-title">Statistiques</div>
   <div class="section-sub">Suivi des scans par QR code</div>
-
-  <div class="stats-grid" id="stats-summary">
+  <div class="stats-grid">
     <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total scans</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">Aujourd'hui</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-week">—</div><div class="stat-label">Cette semaine</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-qrcodes">—</div><div class="stat-label">QR actifs</div></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Détail par QR code</div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>QR Code</th><th>ID</th><th>URL destination</th><th>Scans total</th><th>Dernier scan</th></tr></thead>
-        <tbody id="stats-table"><tr><td colspan="5" class="loading">Chargement...</td></tr></tbody>
-      </table>
-    </div>
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Détail par QR</div>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>Nom</th><th>ID</th><th>URL</th><th>Scans</th><th>Dernier scan</th></tr></thead>
+      <tbody id="stats-table"><tr><td colspan="5" class="loading">Chargement...</td></tr></tbody>
+    </table></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Historique des scans</div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Date & heure</th><th>QR Code</th><th>URL</th><th>Device</th></tr></thead>
-        <tbody id="log-table"><tr><td colspan="4" class="loading">Chargement...</td></tr></tbody>
-      </table>
-    </div>
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:16px">Historique</div>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>Date</th><th>QR</th><th>URL</th><th>Device</th></tr></thead>
+      <tbody id="log-table"><tr><td colspan="4" class="loading">Chargement...</td></tr></tbody>
+    </table></div>
   </div>
 </div>
 
-<!-- PAGE: CRÉER -->
 <div id="page-create" class="page wrap">
   <div class="section-title">Nouveau QR Code</div>
   <div class="section-sub">Créez un QR code tracké avec URL modifiable</div>
-
   <div class="card">
-    <div class="card-title">Informations</div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Nom du QR code</label>
-        <input type="text" id="new-name" placeholder="Ex: Sac Rose — Instagram">
-      </div>
-      <div class="form-group">
-        <label>Identifiant unique (slug)</label>
-        <input type="text" id="new-id" placeholder="Ex: sac-rose-ig">
-      </div>
-      <div class="form-group full">
-        <label>URL de destination</label>
-        <input type="url" id="new-url" placeholder="https://www.instagram.com/iliarestaurant/">
-      </div>
+      <div class="form-group"><label>Nom</label><input type="text" id="new-name" placeholder="Ex: Sac Rose Instagram"></div>
+      <div class="form-group"><label>ID (slug)</label><input type="text" id="new-id" placeholder="Ex: sac-rose-ig"></div>
+      <div class="form-group full"><label>URL de destination</label><input type="url" id="new-url" placeholder="https://www.instagram.com/iliarestaurant/"></div>
     </div>
-
-    <div class="card-title" style="margin-top:20px;">Apparence</div>
-    <div class="form-group" style="margin-bottom:16px;">
-      <label>Couleur du QR code</label>
-      <div class="color-options">
-        <div class="color-opt color-opt-bw selected" onclick="selectColor('bw', this)" title="Noir sur blanc" style="display:flex;align-items:center;justify-content:center;font-size:18px;">⬛</div>
-        <div class="color-opt color-opt-green" onclick="selectColor('green', this)" title="Vert sur blanc" style="display:flex;align-items:center;justify-content:center;font-size:18px;">🟩</div>
-        <div class="color-opt color-opt-rose" onclick="selectColor('rose', this)" title="Vert sur rose" style="display:flex;align-items:center;justify-content:center;font-size:18px;">🌸</div>
-      </div>
+    <div id="qr-preview" style="display:none;margin:20px 0;text-align:center">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mist);margin-bottom:12px">Aperçu</div>
+      <img id="qr-preview-img" src="" style="width:150px;height:150px;border:1px solid var(--linen);border-radius:8px;padding:8px">
     </div>
-
-    <div id="qr-preview" style="display:none;margin:20px 0;text-align:center;">
-      <div class="card-title">Aperçu</div>
-      <img id="qr-preview-img" src="" style="width:150px;height:150px;border:1px solid var(--linen);border-radius:8px;padding:8px;">
-    </div>
-
-    <div style="display:flex;gap:12px;margin-top:8px;">
+    <div style="display:flex;gap:12px;margin-top:8px">
       <button class="btn btn-secondary" onclick="previewQR()">👁 Aperçu</button>
-      <button class="btn btn-primary" onclick="createQR()">✓ Créer ce QR code</button>
+      <button class="btn btn-primary" onclick="createQR()">✓ Créer</button>
     </div>
+    <div id="create-status" style="margin-top:12px;font-size:13px;color:var(--stone)"></div>
   </div>
 </div>
 
-<!-- MODAL EDIT -->
 <div class="modal-overlay" id="modal-edit">
   <div class="modal">
-    <div class="modal-title">Modifier le QR code</div>
+    <div class="modal-title">Modifier l'URL</div>
     <input type="hidden" id="edit-id">
-    <div class="form-group" style="margin-bottom:16px;">
-      <label>Nom</label>
-      <input type="text" id="edit-name">
-    </div>
-    <div class="form-group">
-      <label>URL de destination</label>
-      <input type="url" id="edit-url">
-    </div>
+    <div class="form-group" style="margin-bottom:16px"><label>Nom</label><input type="text" id="edit-name"></div>
+    <div class="form-group"><label>URL de destination</label><input type="url" id="edit-url"></div>
+    <div id="edit-status" style="margin-top:10px;font-size:12px;color:var(--stone)"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
       <button class="btn btn-primary" onclick="saveEdit()">Enregistrer</button>
@@ -241,174 +136,63 @@
   </div>
 </div>
 
-<!-- NOTIFICATION -->
 <div class="notif" id="notif"></div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmx47DrVpn6l3INrBhqYaSJPRcRBlM9_23gmSZglgos8Ir2CEDY-kmC36Ygl2a8hgd/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiQ95DpV7kaxXlxFeklCh-d_WMGDGYvDOUT9SKK1E5QRoKj24l0UOLxSfj29xKjVf1/exec";
 const BASE_URL = "https://julienbenech-spec.github.io/ilia-marketing-plan/qr/redirect.html";
-const SHEET_ID = "1zXMdzQitv4djH_gRdOUOlDITJvQZ2uUnioBVo9mIPC4";
+let qrCodes = [];
 
-// Config QR codes (chargés depuis QR Config du Sheet via Apps Script)
-// Pour l'instant, données statiques + fetch
-let qrCodes = [
-  { id: "s1", name: "Instagram ILIA", url: "https://www.instagram.com/iliarestaurant/", active: true },
-  { id: "s2", name: "TikTok ILIA", url: "https://www.tiktok.com/@iliarestaurant", active: true },
-  { id: "s3", name: "Sticker — Ceci n'est pas un follow us", url: "https://www.instagram.com/iliarestaurant/", active: true },
-  { id: "s4", name: "Sticker — Find your rhythm", url: "https://www.instagram.com/iliarestaurant/", active: true },
-  { id: "s5", name: "Sticker — QR seul", url: "https://www.instagram.com/iliarestaurant/", active: true },
-  { id: "m1", name: "Menu ILIA", url: "https://iliarestaurant.fr", active: true },
-];
-
-let scanLogs = [];
-let selectedColor = 'bw';
-
-// =====================
-// NAV
-// =====================
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t => {
-    if (t.textContent.toLowerCase().includes(page) || 
-        (page === 'create' && t.textContent.includes('Nouveau'))) {
-      t.classList.add('active');
-    }
-  });
-  if (page === 'stats') loadStats();
-  if (page === 'qrcodes') renderQRList();
+// ======= NAV =======
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  event && event.target && event.target.classList.add('active');
+  if (p === 'qrcodes') loadQRList();
+  if (p === 'stats') loadStats();
 }
 
-// =====================
-// QR LIST
-// =====================
-function renderQRList() {
-  const container = document.getElementById('qr-list');
-  if (!qrCodes.length) {
-    container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div>Aucun QR code créé</div></div>';
-    return;
+// ======= LOAD QR LIST =======
+async function loadQRList() {
+  document.getElementById('qr-list').innerHTML = '<div class="loading">Chargement...</div>';
+  try {
+    const r = await fetch(SCRIPT_URL + '?action=list');
+    const d = await r.json();
+    qrCodes = d.qrs || [];
+    renderQRList();
+  } catch(e) {
+    document.getElementById('qr-list').innerHTML = '<div class="loading">Erreur de chargement. Vérifiez la connexion.</div>';
   }
+}
 
-  container.innerHTML = qrCodes.map(qr => {
-    const qrUrl = `${BASE_URL}?id=${qr.id}`;
-    const imgSrc = `https://julienbenech-spec.github.io/ilia-marketing-plan/qr/codes/${qr.id}_${qr.name.split(' ')[0]}_bw.png`;
-    return `
-      <div class="qr-card">
-        <div class="qr-card-header">
-          <div>
-            <div class="qr-name">${qr.name}</div>
-            <div class="qr-id">ID: ${qr.id}</div>
-          </div>
-          <span class="badge badge-green">Actif</span>
-        </div>
-        <div class="qr-url">→ ${qr.url}</div>
-        <div class="qr-img">
-          <img src="${generateQRUrl(qrUrl, 'bw')}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'120\\' height=\\'120\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23f5f4f0\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.35em\\' font-size=\\'12\\' fill=\\'%23888\\'>QR</text></svg>'" alt="QR ${qr.id}">
-        </div>
-        <div class="qr-actions">
-          <button class="btn btn-secondary btn-sm" onclick="editQR('${qr.id}')">✏️ Modifier URL</button>
-          <button class="btn btn-secondary btn-sm" onclick="downloadQR('${qr.id}', '${qr.name}')">⬇️ Télécharger</button>
-          <button class="btn btn-secondary btn-sm" onclick="copyLink('${qrUrl}')">🔗 Copier</button>
-        </div>
-      </div>
-    `;
+function renderQRList() {
+  const c = document.getElementById('qr-list');
+  if (!qrCodes.length) { c.innerHTML = '<div class="loading">Aucun QR code</div>'; return; }
+  c.innerHTML = qrCodes.map(q => {
+    const trackUrl = BASE_URL + '?id=' + q.id;
+    const qrImg = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
+    return '<div class="qr-card">' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">' +
+      '<div><div class="qr-name">' + q.name + '</div><div class="qr-id">ID: ' + q.id + '</div></div>' +
+      '<span class="badge-green">Actif</span></div>' +
+      '<div class="qr-url">' + q.url + '</div>' +
+      '<div class="qr-img"><img src="' + qrImg + '" alt="QR ' + q.id + '"></div>' +
+      '<div class="qr-actions">' +
+      '<button class="btn btn-secondary btn-sm" onclick="editQR(\'' + q.id + '\')">✏️ Modifier URL</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="copyLink(\'' + trackUrl + '\')">🔗 Copier</button>' +
+      '</div></div>';
   }).join('');
 }
 
-function generateQRUrl(data, color) {
-  const fg = color === 'rose' ? '004e38' : color === 'green' ? '004e38' : '2c2c2a';
-  const bg = color === 'rose' ? 'e9b2a8' : 'ffffff';
-  return `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(data)}&color=${fg}&bgcolor=${bg}&margin=2`;
-}
-
-// =====================
-// STATS
-// =====================
-async function loadStats() {
-  // Essayer de charger depuis le Sheet via Apps Script
-  document.getElementById('stats-table').innerHTML = '<tr><td colspan="5" class="loading">Chargement depuis Google Sheets...</td></tr>';
-  document.getElementById('log-table').innerHTML = '<tr><td colspan="4" class="loading">Chargement...</td></tr>';
-
-  try {
-    const res = await fetch(`${SCRIPT_URL}?action=stats`);
-    const data = await res.json();
-    renderStats(data);
-  } catch(e) {
-    // Données de démo si pas de connexion
-    renderStats({ logs: [], config: qrCodes });
-  }
-}
-
-function renderStats(data) {
-  const logs = data.logs || [];
-  const today = new Date().toLocaleDateString('fr-FR');
-  const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
-
-  const total = logs.length;
-  const todayCount = logs.filter(l => l.timestamp && l.timestamp.startsWith(today)).length;
-  const weekCount = logs.filter(l => {
-    if (!l.timestamp) return false;
-    const parts = l.timestamp.split('/');
-    if (parts.length < 3) return false;
-    const d = new Date(`${parts[2].split(' ')[0]}-${parts[1]}-${parts[0]}`);
-    return d >= weekAgo;
-  }).length;
-
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-today').textContent = todayCount;
-  document.getElementById('stat-week').textContent = weekCount;
-  document.getElementById('stat-qrcodes').textContent = qrCodes.length;
-
-  // Stats par QR
-  const byQR = {};
-  const lastScan = {};
-  logs.forEach(l => {
-    if (!l.qr_id) return;
-    byQR[l.qr_id] = (byQR[l.qr_id] || 0) + 1;
-    lastScan[l.qr_id] = l.timestamp;
-  });
-
-  const statsBody = document.getElementById('stats-table');
-  if (!qrCodes.length) {
-    statsBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--mist);padding:20px;">Aucun QR code</td></tr>';
-  } else {
-    statsBody.innerHTML = qrCodes.map(qr => `
-      <tr>
-        <td>${qr.name}</td>
-        <td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px;">${qr.id}</code></td>
-        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${qr.url}</td>
-        <td><span class="scan-count">📊 ${byQR[qr.id] || 0}</span></td>
-        <td>${lastScan[qr.id] || '—'}</td>
-      </tr>
-    `).join('');
-  }
-
-  // Log table
-  const logBody = document.getElementById('log-table');
-  if (!logs.length) {
-    logBody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--mist);padding:40px;">Aucun scan enregistré pour l\'instant.<br>Les scans apparaîtront ici dès que quelqu\'un scanne un QR code.</td></tr>';
-  } else {
-    logBody.innerHTML = logs.slice(-50).reverse().map(l => `
-      <tr>
-        <td>${l.timestamp || '—'}</td>
-        <td>${l.name || l.qr_id || '—'}</td>
-        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.url || '—'}</td>
-        <td><span class="badge badge-gray">${l.device || '—'}</span></td>
-      </tr>
-    `).join('');
-  }
-}
-
-// =====================
-// EDIT QR
-// =====================
+// ======= EDIT =======
 function editQR(id) {
-  const qr = qrCodes.find(q => q.id === id);
-  if (!qr) return;
+  const q = qrCodes.find(x => x.id === id);
+  if (!q) return;
   document.getElementById('edit-id').value = id;
-  document.getElementById('edit-name').value = qr.name;
-  document.getElementById('edit-url').value = qr.url;
+  document.getElementById('edit-name').value = q.name;
+  document.getElementById('edit-url').value = q.url;
+  document.getElementById('edit-status').textContent = '';
   document.getElementById('modal-edit').classList.add('open');
 }
 
@@ -416,49 +200,32 @@ async function saveEdit() {
   const id = document.getElementById('edit-id').value;
   const name = document.getElementById('edit-name').value.trim();
   const url = document.getElementById('edit-url').value.trim();
-
   if (!url) { notify('URL requise'); return; }
-
-  // Mettre à jour localement
-  const idx = qrCodes.findIndex(q => q.id === id);
-  if (idx >= 0) {
-    qrCodes[idx].name = name;
-    qrCodes[idx].url = url;
-  }
-
-  // Envoyer au Sheet via Apps Script
+  document.getElementById('edit-status').textContent = 'Enregistrement...';
   try {
-    await fetch(`${SCRIPT_URL}?action=update&id=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`);
-  } catch(e) { /* silent */ }
-
-  closeModal();
-  renderQRList();
-  notify('✅ URL mise à jour — le QR code est déjà redirigé vers la nouvelle URL');
-}
-
-function closeModal() {
-  document.getElementById('modal-edit').classList.remove('open');
-}
-
-// =====================
-// CREATE QR
-// =====================
-function selectColor(color, el) {
-  selectedColor = color;
-  document.querySelectorAll('.color-opt').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  if (document.getElementById('qr-preview').style.display !== 'none') {
-    previewQR();
+    const r = await fetch(SCRIPT_URL + '?action=update&id=' + encodeURIComponent(id) + '&url=' + encodeURIComponent(url) + '&name=' + encodeURIComponent(name));
+    const d = await r.json();
+    if (d.success) {
+      closeModal();
+      notify('✅ URL mise à jour !');
+      loadQRList();
+    } else {
+      document.getElementById('edit-status').textContent = 'Erreur: ' + (d.error || 'inconnue');
+    }
+  } catch(e) {
+    document.getElementById('edit-status').textContent = 'Erreur réseau: ' + e.message;
   }
 }
 
+function closeModal() { document.getElementById('modal-edit').classList.remove('open'); }
+
+// ======= CREATE =======
 function previewQR() {
   const url = document.getElementById('new-url').value.trim();
   const id = document.getElementById('new-id').value.trim();
   if (!url && !id) { notify('Remplis au moins l\'URL ou l\'ID'); return; }
-  const trackUrl = `${BASE_URL}?id=${id || 'preview'}`;
-  const imgSrc = generateQRUrl(url || trackUrl, selectedColor);
-  document.getElementById('qr-preview-img').src = imgSrc;
+  const trackUrl = BASE_URL + '?id=' + (id || 'preview');
+  document.getElementById('qr-preview-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(url || trackUrl) + '&color=004e38&bgcolor=ffffff&margin=2';
   document.getElementById('qr-preview').style.display = 'block';
 }
 
@@ -466,54 +233,70 @@ async function createQR() {
   const name = document.getElementById('new-name').value.trim();
   const id = document.getElementById('new-id').value.trim().toLowerCase().replace(/\s+/g, '-');
   const url = document.getElementById('new-url').value.trim();
-
   if (!name || !id || !url) { notify('Remplis tous les champs'); return; }
-  if (qrCodes.find(q => q.id === id)) { notify('Cet ID existe déjà'); return; }
-
-  // Ajouter localement
-  qrCodes.push({ id, name, url, active: true });
-
-  // Envoyer au Sheet
+  const status = document.getElementById('create-status');
+  status.textContent = 'Création en cours...';
   try {
-    await fetch(`${SCRIPT_URL}?action=create&id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&url=${encodeURIComponent(url)}`);
-  } catch(e) { /* silent */ }
-
-  // Reset form
-  document.getElementById('new-name').value = '';
-  document.getElementById('new-id').value = '';
-  document.getElementById('new-url').value = '';
-  document.getElementById('qr-preview').style.display = 'none';
-
-  notify('✅ QR code créé !');
-  showPage('qrcodes');
+    const r = await fetch(SCRIPT_URL + '?action=create&id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url));
+    const d = await r.json();
+    if (d.success) {
+      document.getElementById('new-name').value = '';
+      document.getElementById('new-id').value = '';
+      document.getElementById('new-url').value = '';
+      document.getElementById('qr-preview').style.display = 'none';
+      status.textContent = '';
+      notify('✅ QR code créé !');
+      showPage('qrcodes');
+    } else {
+      status.textContent = 'Erreur: ' + (d.error || 'inconnue');
+    }
+  } catch(e) {
+    status.textContent = 'Erreur réseau: ' + e.message;
+  }
 }
 
-// =====================
-// UTILS
-// =====================
-function downloadQR(id, name) {
-  const qr = qrCodes.find(q => q.id === id);
-  const trackUrl = `${BASE_URL}?id=${id}`;
-  const imgSrc = generateQRUrl(trackUrl, 'bw');
-  const a = document.createElement('a');
-  a.href = imgSrc;
-  a.download = `ILIA-QR-${id}.png`;
-  a.click();
+// ======= STATS =======
+async function loadStats() {
+  try {
+    const r = await fetch(SCRIPT_URL + '?action=stats');
+    const d = await r.json();
+    const logs = d.logs || [], config = d.config || [];
+    const today = new Date().toLocaleDateString('fr-FR');
+    const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+    document.getElementById('stat-total').textContent = logs.length;
+    document.getElementById('stat-today').textContent = logs.filter(l => l.timestamp && l.timestamp.startsWith(today.split('/').reverse().join('/'))).length;
+    document.getElementById('stat-week').textContent = logs.length;
+    document.getElementById('stat-qrcodes').textContent = config.length;
+    const byQR = {}, lastScan = {};
+    logs.forEach(l => { if(l.qr_id){byQR[l.qr_id]=(byQR[l.qr_id]||0)+1; lastScan[l.qr_id]=l.timestamp;} });
+    document.getElementById('stats-table').innerHTML = config.map(q =>
+      '<tr><td>' + q.name + '</td><td><code style="font-size:11px;background:var(--cream);padding:2px 6px;border-radius:4px">' + q.id + '</code></td>' +
+      '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + q.url + '</td>' +
+      '<td><span class="badge-green">📊 ' + (byQR[q.id]||0) + '</span></td>' +
+      '<td>' + (lastScan[q.id]||'—') + '</td></tr>'
+    ).join('') || '<tr><td colspan="5">Aucun QR</td></tr>';
+    document.getElementById('log-table').innerHTML = logs.length ?
+      logs.slice(-50).reverse().map(l =>
+        '<tr><td>' + l.timestamp + '</td><td>' + l.name + '</td>' +
+        '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + l.url + '</td>' +
+        '<td>' + l.device + '</td></tr>'
+      ).join('') :
+      '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--mist)">Aucun scan enregistré pour l\'instant.</td></tr>';
+  } catch(e) {
+    document.getElementById('stats-table').innerHTML = '<tr><td colspan="5">Erreur: ' + e.message + '</td></tr>';
+  }
 }
 
-function copyLink(url) {
-  navigator.clipboard.writeText(url).then(() => notify('🔗 Lien copié !'));
-}
-
+// ======= UTILS =======
+function copyLink(url) { navigator.clipboard.writeText(url).then(() => notify('🔗 Lien copié !')); }
 function notify(msg) {
   const n = document.getElementById('notif');
-  n.textContent = msg;
-  n.classList.add('show');
+  n.textContent = msg; n.classList.add('show');
   setTimeout(() => n.classList.remove('show'), 3000);
 }
 
 // Init
-renderQRList();
+loadQRList();
 </script>
 </body>
 </html>
